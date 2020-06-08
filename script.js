@@ -1,37 +1,34 @@
 'use strict';
 
-let money,
-		income,
-		addExpenses,
-		deposit,
-		mission = 99999,
+let money = prompt('Ваш месячный доход?', ''),
+		income = 'фриланс',
+		addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую', ''),
+		deposit = confirm('Есть ли у вас депозит в банке?'),
+		mission = 999999,
 		period,
-		expenses1,
-		expenses2,
-		amount1,
-		amount2,
+		expenses1 = prompt('Введите обязательную статью расходов?', ''),
+		expenses2 = prompt('Введите обязательную статью расходов?', ''),
+		amount1 = prompt('Во сколько это обойдется?', ''),
+		amount2 = prompt('Во сколько это обойдется?', ''),
 		budjetMonth,
 		budjetDay;
 
-alert('Учеба началась. Ура!!!');
-console.log('Сообщение в консоли');
-
-money = prompt('Ваш месячный доход?', '');
-addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую', '');
-deposit = confirm('Есть ли у вас депозит в банке?');
-expenses1 = prompt('Введите обязательную статью расходов?', '');
-expenses2 = prompt('Введите обязательную статью расходов?', '');
-amount1 = prompt('Во сколько это обойдется?', '');
-amount2 = prompt('Во сколько это обойдется?', '');
-
 budjetMonth = money - (+amount1 + +amount2);
-console.log(budjetMonth);
 
 period = Math.ceil(mission / budjetMonth);
-console.log('Цель: ' + mission + '$ будет достигнута через ' + period + ' месяцев');
 
 budjetDay = Math.floor(budjetMonth / 30);
-console.log('budjetDay' + budjetDay);
+
+console.log('money: ', typeof money);
+console.log('income: ', typeof income);
+console.log('deposit: ', typeof deposit);
+console.log('длина addExpense:', addExpenses.length);
+console.log('Период равен ' + period + ' месяцев');
+console.log('Цель заработать ' + mission + ' долларов');
+console.log(addExpenses.toLowerCase().split(','));
+console.log('Бюджет на месяц ' + budjetMonth);
+console.log('Цель: ' + mission + '$ будет достигнута через ' + period + ' месяцев');
+console.log('Бюджет на день ' + budjetDay);
 
 if(budjetDay < 0) {
 	console.log('Что то пошло не так');
