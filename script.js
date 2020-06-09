@@ -1,19 +1,20 @@
 'use strict';
 
-let money = prompt('Ваш месячный доход?', ''),
-		income = 'фриланс',
-		addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую', ''),
-		deposit = confirm('Есть ли у вас депозит в банке?'),
-		mission = 999999,
-		period,
-		expenses1 = prompt('Введите обязательную статью расходов?', ''),
-		expenses2 = prompt('Введите обязательную статью расходов?', ''),
-		amount1 = prompt('Во сколько это обойдется?', ''),
-		amount2 = prompt('Во сколько это обойдется?', ''),
+const money = prompt('Ваш месячный доход?', ''),
+			income = 'фриланс',
+			addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую', ''),
+			deposit = confirm('Есть ли у вас депозит в банке?'),
+			mission = 999999,
+			expenses1 = prompt('Введите обязательную статью расходов?', ''),
+			expenses2 = prompt('Введите обязательную статью расходов?', ''),
+			amount1 = prompt('Во сколько это обойдется?', ''),
+			amount2 = prompt('Во сколько это обойдется?', '');
+
+let period,
 		budjetMonth,
 		budjetDay;
 
-budjetMonth = money - (+amount1 + +amount2);
+budjetMonth = money - (Number(amount1) + Number(amount2));
 
 period = Math.ceil(mission / budjetMonth);
 
