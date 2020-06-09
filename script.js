@@ -6,8 +6,8 @@ const money = prompt('Ваш месячный доход?', ''),
 			deposit = confirm('Есть ли у вас депозит в банке?'),
 			mission = 999999,
 			expenses1 = prompt('Введите обязательную статью расходов?', ''),
-			expenses2 = prompt('Введите обязательную статью расходов?', ''),
 			amount1 = prompt('Во сколько это обойдется?', ''),
+			expenses2 = prompt('Введите обязательную статью расходов?', ''),
 			amount2 = prompt('Во сколько это обойдется?', '');
 
 let period,
@@ -34,7 +34,11 @@ console.log('Бюджет на день ' + budjetDay);
 if(budjetDay < 0) {
 	console.log('Что то пошло не так');
 } else {
-	if(budjetDay > 1200) console.log('У вас высокий уровень дохода');
-	else if(budjetDay < 600) console.log('К сожалению у вас уровень дохода ниже среднего');
-	else console.log('К сожалению у вас средний уровень дохода');
+	if(budjetDay > 1200) {
+		console.log('У вас высокий уровень дохода');
+	} else if(budjetDay < 600) {
+		console.log('К сожалению у вас уровень дохода ниже среднего');
+	} else {
+		console.log('К сожалению у вас средний уровень дохода');
+	}
 }
