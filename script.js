@@ -1,6 +1,7 @@
 'use strict';
 
 let	money,
+		consumption,
 		income = 'фриланс',
 		mission = 999999;
 
@@ -23,6 +24,10 @@ const addExpensesArr = () => {
 }
 
 const arrExpenses = addExpensesArr();
+console.log('длина возможных расходов:', arrExpenses.length);
+console.log(arrExpenses);
+
+console.log('Цель заработать ' + mission + ' долларов');
 
 const deposit = confirm('Есть ли у вас депозит в банке?');
 
@@ -42,22 +47,24 @@ const getExpensesMonth = () => {
 		
 		expenses[i] = prompt('Введите обязательную статью расходов?', '');
 		do {
-			money = prompt('Во сколько это обойдется?', '');
+			consumption = prompt('Во сколько это обойдется?', '');
 		}
-		while(!isNumber(money));
-		sum += +money;
+		while(!isNumber(consumption));
+		sum += +consumption;
 	}
 	console.log(expenses);
 	return sum;
 }
 
 const expensesAmount = getExpensesMonth();
+console.log('Расходы за месяц: ' + expensesAmount);
 
 const getAccumulatedMonth = (money) => {
 	return +money - expensesAmount;
 }
 
 const accumulatedMonth = getAccumulatedMonth(money);
+console.log('Бюджет на месяц ' + accumulatedMonth);
 
 const targetMessageShow = (target) => {
 	target > 0 ? 
@@ -72,12 +79,15 @@ const getTargetMonth = (mission, acc) => {
 }
 
 const period = getTargetMonth(mission, accumulatedMonth);
+console.log('Цель: ' + mission + '$ будет достигнута через ' + period + ' месяцев');
+console.log('Период равен ' + period + ' месяцев');
 
 const getBudjetDay = (acc, days) => {
 	return acc / days;
 }
 
 const budjetDay = Math.floor(getBudjetDay(accumulatedMonth, 30));
+console.log('Бюджет на день ' + budjetDay);
 
 const getStatusIncome = (budjet) => {
 	if(budjet < 0) {
@@ -93,12 +103,10 @@ const getStatusIncome = (budjet) => {
 	}
 }
 
-console.log('длина addExpense:', arrExpenses.length);
-console.log('Цель заработать ' + mission + ' долларов');
-console.log('Расходы за месяц: ' + expensesAmount);
-console.log('Период равен ' + period + ' месяцев');
-console.log('Возможные расходы' + arrExpenses);
-console.log('Бюджет на месяц ' + accumulatedMonth);
-console.log('Цель: ' + mission + '$ будет достигнута через ' + period + ' месяцев');
-console.log('Бюджет на день ' + budjetDay);
 console.log(getStatusIncome(budjetDay));
+
+
+
+
+
+
