@@ -1,13 +1,6 @@
 'use strict';
 
-let	money,
-		consumption,
-		income = 'фриланс',
-		mission = 999999;
-
-const isNumber = (n) => {
-	return !isNaN(parseFloat(n)) && isFinite(n);
-}
+let money;
 
 const start = () => {
 	do {
@@ -16,55 +9,71 @@ const start = () => {
 	while(!isNumber(money));
 }
 
+const isNumber = (n) => {
+	return !isNaN(parseFloat(n)) && isFinite(n);
+}
+
 start();
 
-const addExpensesArr = () => {
-	let addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую', '');
-	return addExpenses.toLowerCase().split(',');
-}
+let appData = {
+	budjet: money,
+	budjetDay: 0,
+	budjetMonth: 0,
+	expensesMonth: 0,
+	income: {},
+	addIncome: [],
+	expenses: {},
+	addExpenses: [],
+	deposit: false,
+	mission: 50000,
+	period: 0,
+	asking: () => {
+		let addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую', '');
+		appData.addExpenses = addExpenses.toLowerCase().split(',');
+		appData.deposit = confirm('Есть ли у вас депозит в банке?');
+		let article,
+		consumption;
 
-const arrExpenses = addExpensesArr();
-console.log('длина возможных расходов:', arrExpenses.length);
-console.log(arrExpenses);
-
-console.log('Цель заработать ' + mission + ' долларов');
-
-const deposit = confirm('Есть ли у вас депозит в банке?');
-
-const expenses = [];
-
-const showTypeOf = (data) => {
-	console.log(data, typeof(data));
-}
-showTypeOf(money);
-showTypeOf(income);
-showTypeOf(deposit);
-
-const getExpensesMonth = () => {
-	let sum = 0;
-
-	for (let i = 0; i < 2; i++) {
-		
-		expenses[i] = prompt('Введите обязательную статью расходов?', '');
-		do {
-			consumption = prompt('Во сколько это обойдется?', '');
+		for(let i = 0; i < 2; i++) {
+			article = prompt('Введите обязательную статью расходов?', '');
+			do {
+				consumption = prompt('Во сколько это обойдется?', '');
+			} while (!isNumber(consumption));
+	
+			appData.expenses[article] = +consumption;
 		}
-		while(!isNumber(consumption));
-		sum += +consumption;
+	},
+	getExpensesMonth: () => {
+		let sum = 0;
+		for(let article in appData.expenses) {
+			sum += +appData.expenses[article];
+		}
+
+		return sum;
+	},
+	getBudjet: (money) => {
+		appData.budjetMonth = +money - appData.getExpensesMonth();
+		appData.budjetDay = Math.floor(appData.budjetMonth / 30);
+	},
+	getTargetMonth: (mission, acc) => {
+		let target = mission / acc;
+		targetMessageShow(target);
+		return target;
 	}
-	console.log(expenses);
-	return sum;
-}
 
-const expensesAmount = getExpensesMonth();
-console.log('Расходы за месяц: ' + expensesAmount);
+};
 
-const getAccumulatedMonth = (money) => {
-	return +money - expensesAmount;
-}
+appData.asking();
 
-const accumulatedMonth = getAccumulatedMonth(money);
-console.log('Бюджет на месяц ' + accumulatedMonth);
+console.log('длина возможных расходов:', appData.addExpenses.length);
+console.log(appData.addExpenses);
+
+console.log('Цель заработать ' + appData.mission + ' долларов');
+
+console.log(appData.expenses);
+console.log('Расходы за месяц: ' + appData.getExpensesMonth());
+
+console.log('Бюджет на месяц ' + appData.budjetMonth);
 
 const targetMessageShow = (target) => {
 	target > 0 ? 
@@ -72,21 +81,11 @@ const targetMessageShow = (target) => {
 	console.log('Цель не будет достигнута');
 }
 
-const getTargetMonth = (mission, acc) => {
-	let target = mission / acc;
-	targetMessageShow(target);
-	return target;
-}
-
-const period = getTargetMonth(mission, accumulatedMonth);
-console.log('Цель: ' + mission + '$ будет достигнута через ' + period + ' месяцев');
+const period = Math.ceil(appData.getTargetMonth(appData.mission, appData.budjetMonth));
+console.log('Цель: ' + appData.mission + '$ будет достигнута через ' + period + ' месяцев');
 console.log('Период равен ' + period + ' месяцев');
 
-const getBudjetDay = (acc, days) => {
-	return acc / days;
-}
-
-const budjetDay = Math.floor(getBudjetDay(accumulatedMonth, 30));
+const budjetDay = appData.budjetDay;
 console.log('Бюджет на день ' + budjetDay);
 
 const getStatusIncome = (budjet) => {
@@ -104,9 +103,3 @@ const getStatusIncome = (budjet) => {
 }
 
 console.log(getStatusIncome(budjetDay));
-
-
-
-
-
-
