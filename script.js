@@ -55,51 +55,35 @@ let appData = {
 		appData.budjetMonth = +money - appData.getExpensesMonth();
 		appData.budjetDay = Math.floor(appData.budjetMonth / 30);
 	},
-	getTargetMonth: (mission, acc) => {
-		let target = mission / acc;
-		targetMessageShow(target);
+	getTargetMonth: () => {
+		let target = appData.mission / appData.budjetMonth;
 		return target;
-	}
-
-};
-
-appData.asking();
-
-console.log('длина возможных расходов:', appData.addExpenses.length);
-console.log(appData.addExpenses);
-
-console.log('Цель заработать ' + appData.mission + ' долларов');
-
-console.log(appData.expenses);
-console.log('Расходы за месяц: ' + appData.getExpensesMonth());
-
-console.log('Бюджет на месяц ' + appData.budjetMonth);
-
-const targetMessageShow = (target) => {
-	target > 0 ? 
-	console.log('Цель будет достигнута!') :
-	console.log('Цель не будет достигнута');
-}
-
-const period = Math.ceil(appData.getTargetMonth(appData.mission, appData.budjetMonth));
-console.log('Цель: ' + appData.mission + '$ будет достигнута через ' + period + ' месяцев');
-console.log('Период равен ' + period + ' месяцев');
-
-const budjetDay = appData.budjetDay;
-console.log('Бюджет на день ' + budjetDay);
-
-const getStatusIncome = (budjet) => {
-	if(budjet < 0) {
-		return 'Что то пошло не так';
-	} else {
-		if(budjet > 1200) {
-			return 'У вас высокий уровень дохода';
-		} else if(budjet < 600) {
-			return 'К сожалению у вас уровень дохода ниже среднего';
+	},
+	targetMessageShow: (target) => {
+		target > 0 ? 
+		console.log('Цель будет достигнута!') :
+		console.log('Цель не будет достигнута');
+	},
+	getStatusIncome: (budjet) => {
+		if(budjet < 0) {
+			return 'Что то пошло не так';
 		} else {
-			return 'К сожалению у вас средний уровень дохода';
+			if(budjet > 1200) {
+				return 'У вас высокий уровень дохода';
+			} else if(budjet < 600) {
+				return 'К сожалению у вас уровень дохода ниже среднего';
+			} else {
+				return 'К сожалению у вас средний уровень дохода';
+			}
 		}
 	}
+};
+appData.asking();
+console.log('Расходы за месяц: ' + appData.getExpensesMonth());
+appData.getBudjet(appData.budjet);
+console.log('Цель: ' + appData.mission + '$ будет достигнута через ' + appData.getTargetMonth() + ' месяцев');
+console.log(appData.getStatusIncome(appData.budjetDay));
+console.log(`Наша программа включает в себя данные: `);
+for(let property in appData) {
+	console.log(`${property}: ${appData[property]}`);
 }
-
-console.log(getStatusIncome(budjetDay));
