@@ -44,15 +44,12 @@ let appData = {
 		}
 	},
 	getExpensesMonth: () => {
-		let sum = 0;
 		for(let article in appData.expenses) {
-			sum += +appData.expenses[article];
+			appData.expensesMonth += +appData.expenses[article];
 		}
-
-		return sum;
 	},
 	getBudjet: (money) => {
-		appData.budjetMonth = +money - appData.getExpensesMonth();
+		appData.budjetMonth = +money - appData.expensesMonth;
 		appData.budjetDay = Math.floor(appData.budjetMonth / 30);
 	},
 	getTargetMonth: () => {
@@ -79,11 +76,12 @@ let appData = {
 	}
 };
 appData.asking();
-console.log('Расходы за месяц: ' + appData.getExpensesMonth());
+appData.getExpensesMonth();
+console.log('Расходы за месяц: ' + appData.expensesMonth);
 appData.getBudjet(appData.budjet);
 console.log('Цель: ' + appData.mission + '$ будет достигнута через ' + appData.getTargetMonth() + ' месяцев');
 console.log(appData.getStatusIncome(appData.budjetDay));
 console.log(`Наша программа включает в себя данные: `);
 for(let property in appData) {
-	console.log(`${property}: ${appData[property]}`);
+	console.log(`${property}: `, appData[property]);
 }
