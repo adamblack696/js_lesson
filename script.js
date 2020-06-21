@@ -6,11 +6,15 @@ const start = () => {
 	do {
 		money = prompt('Ваш месячный доход?', '');
 	}
-	while(!isNumber(money));
+	while (!isNumber(money));
 }
 
 const isNumber = (n) => {
 	return !isNaN(parseFloat(n)) && isFinite(n);
+}
+
+const isString = (string) => {
+	return (/[a-zA-Z|а-яА-Я]/g).test(string) && string !== null;
 }
 
 start();
@@ -25,17 +29,35 @@ let appData = {
 	expenses: {},
 	addExpenses: [],
 	deposit: false,
+	percentDeposit: 0,
+	moneyDeposit: 0,
 	mission: 50000,
-	period: 0,
+	period: 3,
 	asking: () => {
+		if(confirm('Есть ли у вас дополнительный заработок?')) {
+			let itemIncome, cashIncome;
+			do {
+				itemIncome = prompt('Какой у вас дополнительный заработок?', 'Фриланс');
+			}
+			while(!isString(itemIncome));
+			do {
+				cashIncome = prompt('Сколько в месяц вы на этом зарабатываете?', 10000);
+			}
+			while(!isNumber(cashIncome));
+		}
 		let addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую', '');
-		appData.addExpenses = addExpenses.toLowerCase().split(',');
+		addExpenses = addExpenses.toLowerCase().split(', ');
+		addExpenses.forEach((item) => {
+			appData.addExpenses.push(item[0].toUpperCase() + item.slice(1));
+		})
 		appData.deposit = confirm('Есть ли у вас депозит в банке?');
 		let article,
 		consumption;
 
 		for(let i = 0; i < 2; i++) {
+			do {
 			article = prompt('Введите обязательную статью расходов?', '');
+			} while (!isString(article));
 			do {
 				consumption = prompt('Во сколько это обойдется?', '');
 			} while (!isNumber(consumption));
@@ -73,6 +95,19 @@ let appData = {
 				return 'К сожалению у вас средний уровень дохода';
 			}
 		}
+	},
+	getinfoDeposit: () => {
+		if(appData.deposit) {
+			do {
+				appData.percentDeposit = prompt('Какой годовой процент?', '10');
+			}	while (!isString(appData.percentDeposit));
+			do {
+				appData.moneyDeposit = prompt('Какая сумма заложена?', 10000);
+			} while (!isNumber(appData.moneyDeposit));
+		}
+	},
+	calcSavedMoney: () => {
+		return appData.budjetMonth * appData.period;
 	}
 };
 appData.asking();
