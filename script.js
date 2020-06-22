@@ -16,7 +16,6 @@ const isNumber = (n) => {
 const isString = (string) => {
 	return (/[a-zA-Z|а-яА-Я]/g).test(string) && string !== null;
 }
-
 start();
 
 let appData = {
