@@ -2,18 +2,18 @@
 
 let money;
 
-const start = () => {
+const start = function() {
 	do {
 		money = prompt('Ваш месячный доход?', '');
 	}
 	while (!isNumber(money));
 }
 
-const isNumber = (n) => {
+const isNumber = function(n) {
 	return !isNaN(parseFloat(n)) && isFinite(n);
 }
 
-const isString = (string) => {
+const isString = function(string) {
 	return (/[a-zA-Z|а-яА-Я]/g).test(string) && string !== null;
 }
 start();
@@ -32,7 +32,7 @@ let appData = {
 	moneyDeposit: 0,
 	mission: 50000,
 	period: 3,
-	asking: () => {
+	asking: function() {
 		if(confirm('Есть ли у вас дополнительный заработок?')) {
 			let itemIncome, cashIncome;
 			do {
@@ -64,25 +64,25 @@ let appData = {
 			appData.expenses[article] = +consumption;
 		}
 	},
-	getExpensesMonth: () => {
+	getExpensesMonth: function() {
 		for(let article in appData.expenses) {
 			appData.expensesMonth += +appData.expenses[article];
 		}
 	},
-	getBudjet: (money) => {
+	getBudjet: function(money) {
 		appData.budjetMonth = +money - appData.expensesMonth;
 		appData.budjetDay = Math.floor(appData.budjetMonth / 30);
 	},
-	getTargetMonth: () => {
+	getTargetMonth: function() {
 		let target = appData.mission / appData.budjetMonth;
 		return target;
 	},
-	targetMessageShow: (target) => {
+	targetMessageShow: function(target) {
 		target > 0 ? 
 		console.log('Цель будет достигнута!') :
 		console.log('Цель не будет достигнута');
 	},
-	getStatusIncome: (budjet) => {
+	getStatusIncome: function(budjet) {
 		if(budjet < 0) {
 			return 'Что то пошло не так';
 		} else {
@@ -95,7 +95,7 @@ let appData = {
 			}
 		}
 	},
-	getinfoDeposit: () => {
+	getinfoDeposit: function() {
 		if(appData.deposit) {
 			do {
 				appData.percentDeposit = prompt('Какой годовой процент?', '10');
@@ -105,7 +105,7 @@ let appData = {
 			} while (!isNumber(appData.moneyDeposit));
 		}
 	},
-	calcSavedMoney: () => {
+	calcSavedMoney: function() {
 		return appData.budjetMonth * appData.period;
 	}
 };
