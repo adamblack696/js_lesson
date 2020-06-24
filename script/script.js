@@ -1,8 +1,8 @@
 'use strict';
 
 const startButton = document.getElementById('start'),
-buttonIncomeAdd = document.querySelectorAll('button')[0],
-buttonExpensesAdd = document.querySelectorAll('button')[1],
+buttonIncomeAdd = document.getElementsByTagName('button')[0],
+buttonExpensesAdd = document.getElementsByTagName('button')[1],
 depositCheck = document.querySelector('#deposit-check'),
 inputAddIncom = document.querySelectorAll('.additional_income-item'),
 inputSalaryAmount = document.querySelector('.salary-amount'),
@@ -12,16 +12,17 @@ inputExpensesTitle = document.querySelector('input.expenses-title'),
 inputExpensesAmount = document.querySelector('.expenses-amount'),
 inputAddExpensesItem = document.querySelector('.additional_expenses-item'),
 inputTargetAmount = document.querySelector('.target-amount'),
-budjetDayValue = document.querySelector('.budget_day-value'),
-budjetMonthValue = document.querySelector('.budget_month-value'),
-expensesMonthValue = document.querySelector('.expenses_month-value'),
-addIncomeValue = document.querySelector('.additional_income-value'),
-addExpensesValue = document.querySelector('.additional_expenses-value'),
-incomePeriodValue = document.querySelector('.income_period-value'),
-targetMonthValue = document.querySelector('.target_month-value'),
+resultTotal = document.getElementsByClassName('result-total'),
+budjetMonthValue = resultTotal[0],
+budjetDayValue = resultTotal[1],
+expensesMonthValue = resultTotal[2],
+addIncomeValue = resultTotal[3],
+addExpensesValue = resultTotal[4],
+incomePeriodValue = resultTotal[5],
+targetMonthValue = resultTotal[6],
 range = document.querySelector('.period-select');
-
-console.log(startButton, buttonIncomeAdd, buttonExpensesAdd, depositCheck, inputAddIncom, inputSalaryAmount, inputIncomeTitle, inputIncomeAmount, inputExpensesTitle, inputExpensesAmount, inputAddExpensesItem,inputTargetAmount, budjetDayValue, budjetMonthValue, expensesMonthValue, addIncomeValue, addExpensesValue, incomePeriodValue, targetMonthValue, range);
+console.log(startButton, buttonIncomeAdd, buttonExpensesAdd, depositCheck, inputAddIncom, inputSalaryAmount, inputIncomeTitle, inputIncomeAmount);
+console.log(inputExpensesTitle, inputExpensesAmount, inputAddExpensesItem,inputTargetAmount, budjetDayValue, budjetMonthValue, expensesMonthValue, addIncomeValue, addExpensesValue, incomePeriodValue, targetMonthValue, range);
 
 // let money;
 
