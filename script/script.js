@@ -31,7 +31,7 @@ const isNumber = function(n) {
 }
 
 const isString = function(string) {
-	return (/[a-zA-Z|а-яА-Я]/g).test(string) && string !== null;
+	return (/[а-яА-Я]/g).test(string) && string;
 }
 
 let appData = {
@@ -49,7 +49,7 @@ let appData = {
 	moneyDeposit: 0,
 	period: 3,
 	start: function() {
-		if(!salaryAmount.value) {
+		if(!isNumber(salaryAmount.value)) {
 			alert('Ошибка "Месячный доход должен быть заполнен!"');
 			return;
 		}
@@ -73,6 +73,8 @@ let appData = {
 	},
 	addExpensesBlock: function() {
 		const cloneExpensesItem = expensesItem[0].cloneNode(true);
+		cloneExpensesItem.querySelector('.expenses-title').value = '';
+		cloneExpensesItem.querySelector('.expenses-amount').value = '';
 		expensesItem[expensesItem.length - 1].insertAdjacentElement('afterend', cloneExpensesItem);
 		expensesItem = document.querySelectorAll('.expenses-items');
 		if(expensesItem.length === 3) {
@@ -90,6 +92,8 @@ let appData = {
 	},
 	addIncomeBlock: function() {
 		const incomeItemClone = incomeItem[0].cloneNode(true);
+		incomeItemClone.querySelector('.income-title').value = '';
+		incomeItemClone.querySelector('.income-amount').value = '';
 		incomeItem[incomeItem.length - 1].insertAdjacentElement('afterend', incomeItemClone);
 		incomeItem = document.querySelectorAll('.income-items');
 		if(incomeItem.length === 3) {
@@ -99,28 +103,36 @@ let appData = {
 	getAddIncome: function() {
 		additionalIncomeItem.forEach((item) => {
 			let itemValue = item.value.trim();
-			if(itemValue) {
+			if(isString(itemValue)) {
 				appData.addIncome.push(itemValue);
+			} else {
+				item.style.border = '1px solid red';
 			}
 		})
 	},
 	getExpenses: function() {
 		expensesItem.forEach((item) => {
-			let itemExpenses = item.querySelector('.expenses-title').value,
-			cashExpenses = item.querySelector('.expenses-amount').value;
-			if(itemExpenses && cashExpenses) {
-				appData.expenses[itemExpenses] = cashExpenses;
+			let itemExpenses = item.querySelector('.expenses-title'),
+			cashExpenses = item.querySelector('.expenses-amount');
+			if(isString(itemExpenses.value) && isNumber(cashExpenses.value)) {
+				appData.expenses[itemExpenses.value] = cashExpenses.value;
+			} else {
+				itemExpenses.style.border = '1px solid red';
+				cashExpenses.style.border = '1px solid red';
 			}
 		});
 	},
 	getIncome: function() {
 		incomeItem.forEach((item) => {
-			let title = item.querySelector('.income-title').value,
-			amount = item.querySelector('.income-amount').value;
-			if(title && amount) {
-				appData.income[title] = amount;
+			let title = item.querySelector('.income-title'),
+			amount = item.querySelector('.income-amount');
+			if(isString(title.value) && isNumber(amount.value)) {
+				appData.income[title.value] = amount.value;
+			} else {
+				title.style.border = '1px solid red';
+				amount.style.border = '1px solid red';
 			}
-		})
+		});
 		for(let key in appData.income) {
 			appData.incomeMonth += +appData.income[key];
 		}
@@ -135,7 +147,12 @@ let appData = {
 		appData.budjetDay = Math.floor(appData.budjetMonth / 30);
 	},
 	getTargetMonth: function() {
-		return targetAmount.value / appData.budjetMonth;
+		if(isString(targetAmount)) {
+			return targetAmount.value / appData.budjetMonth;
+		} else {
+			targetAmount.style.border = '1px solid red';
+			return 0; 
+		}
 	},
 	targetMessageShow: function(target) {
 		target > 0 ? 
