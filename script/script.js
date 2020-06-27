@@ -31,7 +31,7 @@ const isNumber = function(n) {
 }
 
 const isString = function(string) {
-	return (/[а-яА-Я]/g).test(string) === string;
+	return (/[а-яА-Я]/g).test(string) === string && string;
 }
 
 let appData = {
