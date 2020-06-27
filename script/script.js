@@ -17,13 +17,13 @@ budjetDayValue = resultTotal[1],
 expensesMonthValue = resultTotal[2],
 addIncomeValue = resultTotal[3],
 addExpensesValue = resultTotal[4],
-incomePeriodValue = resultTotal[5],
 targetMonthValue = resultTotal[6],
 periodAmount = document.querySelector('.period-amount'),
 additionalExpensesItem = document.querySelector('.additional_expenses-item'),
 periodSelect = document.querySelector('.period-select');
 
 let expensesItem = document.querySelectorAll('.expenses-items'),
+incomePeriodValue = resultTotal[5],
 incomeItem = document.querySelectorAll('.income-items');
 
 const isNumber = function(n) {
@@ -70,6 +70,8 @@ let appData = {
 		addExpensesValue.value = appData.addExpenses.join(', ');
 		addIncomeValue.value = appData.addIncome.join(', ');
 		targetMonthValue.value = Math.ceil(appData.getTargetMonth());
+
+		periodSelect.addEventListener('change', appData.calcSavedMoney());
 	},
 	addExpensesBlock: function() {
 		const cloneExpensesItem = expensesItem[0].cloneNode(true);
@@ -154,36 +156,36 @@ let appData = {
 			return 0; 
 		}
 	},
-	targetMessageShow: function(target) {
-		target > 0 ? 
-		console.log('Цель будет достигнута!') :
-		console.log('Цель не будет достигнута');
-	},
-	getStatusIncome: function(budjet) {
-		if(budjet < 0) {
-			return 'Что то пошло не так';
-		} else {
-			if(budjet > 1200) {
-				return 'У вас высокий уровень дохода';
-			} else if(budjet < 600) {
-				return 'К сожалению у вас уровень дохода ниже среднего';
-			} else {
-				return 'К сожалению у вас средний уровень дохода';
-			}
-		}
-	},
-	getinfoDeposit: function() {
-		if(appData.deposit) {
-			do {
-				appData.percentDeposit = prompt('Какой годовой процент?', '10');
-			}	while (!isString(appData.percentDeposit));
-			do {
-				appData.moneyDeposit = prompt('Какая сумма заложена?', 10000);
-			} while (!isNumber(appData.moneyDeposit));
-		}
-	},
+	// targetMessageShow: function(target) {
+	// 	target > 0 ? 
+	// 	console.log('Цель будет достигнута!') :
+	// 	console.log('Цель не будет достигнута');
+	// },
+	// getStatusIncome: function(budjet) {
+	// 	if(budjet < 0) {
+	// 		return 'Что то пошло не так';
+	// 	} else {
+	// 		if(budjet > 1200) {
+	// 			return 'У вас высокий уровень дохода';
+	// 		} else if(budjet < 600) {
+	// 			return 'К сожалению у вас уровень дохода ниже среднего';
+	// 		} else {
+	// 			return 'К сожалению у вас средний уровень дохода';
+	// 		}
+	// 	}
+	// },
+	// getinfoDeposit: function() {
+	// 	if(appData.deposit) {
+	// 		do {
+	// 			appData.percentDeposit = prompt('Какой годовой процент?', '10');
+	// 		}	while (!isString(appData.percentDeposit));
+	// 		do {
+	// 			appData.moneyDeposit = prompt('Какая сумма заложена?', 10000);
+	// 		} while (!isNumber(appData.moneyDeposit));
+	// 	}
+	// },
 	calcSavedMoney: function() {
-		return appData.budjetMonth * periodSelect.value;
+		incomePeriodValue.value = appData.budjetMonth * periodSelect.value;
 	},
 	periodChange: function() {
 		periodAmount.textContent = periodSelect.value;
@@ -193,9 +195,9 @@ start.addEventListener('click', appData.start);
 expensesPlus.addEventListener('click', appData.addExpensesBlock);
 incomeAdd.addEventListener('click', appData.addIncomeBlock);
 periodSelect.addEventListener('change', appData.periodChange);
-periodSelect.addEventListener('change', appData.start);
 // console.log('Цель: ' + appData.mission + '$ будет достигнута через ' + appData.getTargetMonth() + ' месяцев');
 // console.log(`Наша программа включает в себя данные: `);
 // for(let property in appData) {
 // 	console.log(`${property}: `, appData[property]);
 // }
+periodSelect.addEventListener('change', appData.showResult);
