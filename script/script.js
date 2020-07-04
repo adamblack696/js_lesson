@@ -1,6 +1,9 @@
 'use strict';
 
 const startButton = document.getElementById('start'),
+cancelButton = document.getElementById('cancel'),
+inputsData = document.querySelectorAll('.data input[type=text]'),
+inputs = document.querySelectorAll('input'),
 incomeAdd = document.getElementsByTagName('button')[0],
 expensesPlus = document.getElementsByTagName('button')[1],
 depositCheck = document.querySelector('#deposit-check'),
@@ -53,9 +56,14 @@ let appData = {
 			alert('Ошибка "Месячный доход должен быть заполнен!"');
 			return;
 		}
+		startButton.style.display = 'none';
+		cancelButton.style.display = 'inline-block';
 		this.budjet = +salaryAmount.value;
 		salaryAmount.value = '';
-
+		inputsData.forEach((input) => {
+			input.textContent = '';
+			input.disabled = true;
+		});
 		this.getExpenses();
 		this.getIncome();
 		this.getExpensesMonth();
@@ -64,6 +72,21 @@ let appData = {
 		this.getBudjet(this.budjet);
 		this.getTargetMonth();
 		this.showResult();
+		cancelButton.addEventListener('click', this.reset)
+	},
+	reset: function() {
+		const newObj = Object.assign({}, appData);
+		appData = {};
+		appData = newObj;
+		appData.start;
+		cancelButton.style.display = 'none';
+		startButton.style.display = 'inline-block';
+		inputs.forEach((input, i) => {
+			input.value = '';
+			if(i < 12) {
+				input.disabled = false;
+			}
+		});
 	},
 	showResult: function() {
 		budjetMonthValue.value = this.budjetMonth;
