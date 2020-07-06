@@ -27,6 +27,7 @@ periodSelect = document.querySelector('.period-select');
 let expensesItem = document.querySelectorAll('.expenses-items'),
 incomeItem = document.querySelectorAll('.income-items');
 
+
 const isNumber = function(n) {
 	return !isNaN(parseFloat(n)) && isFinite(n);
 }
@@ -40,7 +41,7 @@ const isString = function(string) {
 	}
 }
 
-const appData = {
+let appData = {
 	budjet: 0,
 	budjetDay: 0,
 	budjetMonth: 0,
@@ -71,14 +72,20 @@ const appData = {
 		this.showResult();
 		const inputsData = document.querySelectorAll('.data input[type=text]');
 		inputsData.forEach((input) => {
-			input.value = '';
 			input.disabled = true;
 		});
+		incomeAdd.disabled = true;
+		expensesPlus.disabled = true;
 		cancelButton.addEventListener('click', appData.reset.bind(appData));
 	},
 	reset: function() {
-		const newObj = Object.assign({}, appData),
-		inputs = document.querySelectorAll('input');
+		const inputs = document.querySelectorAll('input');
+		Object.assign(appData, newObj);
+		newObj.addExpenses = [];
+		newObj.addIncome = [];
+		newObj.expenses = {};
+		incomeAdd.disabled = '';
+		expensesPlus.disabled = '';
 		cancelButton.style.display = 'none';
 		startButton.style.display = 'inline-block';
 		for(let i = 0; i < inputs.length; i++) {
@@ -87,6 +94,17 @@ const appData = {
 			}
 			inputs[i].disabled = '';
 		};
+		const incomeItems = document.querySelectorAll('.income-items'),
+		expensesItems = document.querySelectorAll('.expenses-items');
+		const removedNode = function(nodes) {
+			if(nodes.length > 1) {
+				for(let i = 1; i < nodes.length; i++) {
+					nodes[i].remove();
+				}
+			}
+		}
+		removedNode(incomeItems);
+		removedNode(expensesItems)
 		inputs.forEach((input) => {
 			if(input.type !== 'range') {
 				input.value = '';
@@ -95,7 +113,6 @@ const appData = {
 				periodAmount.textContent = 1;
 			}
 		});
-		Object.assign(appData, newObj);
 		this.start;
 	},
 	showResult: function() {
@@ -198,7 +215,13 @@ const appData = {
 		periodAmount.textContent = periodSelect.value;
 	}
 };
-start.addEventListener('click', appData.start.bind(appData));
+const newObj = Object.assign({}, appData);
+newObj.addExpenses = [];
+newObj.addIncome = [];
+newObj.expenses = {};
+start.addEventListener('click', function() {
+	appData.start();
+});
 expensesPlus.addEventListener('click', appData.addExpensesBlock);
 incomeAdd.addEventListener('click', appData.addIncomeBlock);
 periodSelect.addEventListener('change', appData.periodChange);
