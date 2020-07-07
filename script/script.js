@@ -41,7 +41,7 @@ const isString = function(string) {
 	}
 }
 
-let appData = {
+const appData = {
 	budjet: 0,
 	budjetDay: 0,
 	budjetMonth: 0,
@@ -55,6 +55,7 @@ let appData = {
 	percentDeposit: 0,
 	moneyDeposit: 0,
 	start: function() {
+		const _this = this;
 		if(!isNumber(salaryAmount.value)) {
 			alert('Ошибка "Месячный доход должен быть заполнен!"');
 			return;
@@ -76,14 +77,17 @@ let appData = {
 		});
 		incomeAdd.disabled = true;
 		expensesPlus.disabled = true;
-		cancelButton.addEventListener('click', appData.reset.bind(appData));
 	},
 	reset: function() {
+		const _this = this;
 		const inputs = document.querySelectorAll('input');
+		// for(let key in appData) {
+		// 	appData[key] = newObj[key];
+		// 	console.log(appData[key]);
+		// }
 		Object.assign(appData, newObj);
-		newObj.addExpenses = [];
-		newObj.addIncome = [];
-		newObj.expenses = {};
+
+		// Object.assign(_this, newObj);
 		incomeAdd.disabled = '';
 		expensesPlus.disabled = '';
 		cancelButton.style.display = 'none';
@@ -215,17 +219,26 @@ let appData = {
 		periodAmount.textContent = periodSelect.value;
 	}
 };
-const newObj = Object.assign({}, appData);
-newObj.addExpenses = [];
-newObj.addIncome = [];
-newObj.expenses = {};
+const newObj = {};
+for(let key in appData) {
+	if(appData[key] instanceof Object) {
+		newObj[key] = {...appData[key]};
+	} 
+	if(appData[key] instanceof Array) {
+		console.log(newObj[key]);
+		newObj[key] = [...appData[key]];
+	} else {
+		newObj[key] = appData[key];
+	}
+}
+
 start.addEventListener('click', function() {
 	appData.start();
 });
 expensesPlus.addEventListener('click', appData.addExpensesBlock);
 incomeAdd.addEventListener('click', appData.addIncomeBlock);
 periodSelect.addEventListener('change', appData.periodChange);
-
+cancelButton.addEventListener('click', appData.reset);
 periodSelect.addEventListener('change', () => {
 	if(appData.budjetMonth) {
 		appData.showResult.bind(appData);
