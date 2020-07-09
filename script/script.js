@@ -112,7 +112,6 @@ class AppData {
 				periodAmount.textContent = 1;
 			}
 		});
-		this.eventListeners();
 	}
 	showResult() {
 		budjetMonthValue.value = this.budjetMonth;
