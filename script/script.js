@@ -76,6 +76,13 @@ class AppData {
 		incomeAdd.disabled = true;
 		expensesAdd.disabled = true;
 	}
+	removedNode(nodes) {
+		if(nodes.length > 1) {
+			for(let i = 1; i < nodes.length; i++) {
+				nodes[i].remove();
+			}
+		}
+	}
 	reset() {
 		const inputs = document.querySelectorAll('input');
 		const newObj = new AppData();
@@ -94,15 +101,8 @@ class AppData {
 		}
 		const incomeItems = document.querySelectorAll('.income-items'),
 		expensesItems = document.querySelectorAll('.expenses-items');
-		const removedNode = function(nodes) {
-			if(nodes.length > 1) {
-				for(let i = 1; i < nodes.length; i++) {
-					nodes[i].remove();
-				}
-			}
-		}
-		removedNode(incomeItems);
-		removedNode(expensesItems);
+		this.removedNode(incomeItems);
+		this.removedNode(expensesItems);
 		inputs.forEach((input) => {
 			if(input.type !== 'range') {
 				input.style.border = '';
@@ -115,7 +115,6 @@ class AppData {
 		this.eventListeners();
 	}
 	showResult() {
-		const _this = this;
 		budjetMonthValue.value = this.budjetMonth;
 		budjetDayValue.value = this.budjetDay;
 		expensesMonthValue.value = this.expensesMonth;
@@ -123,8 +122,8 @@ class AppData {
 		addIncomeValue.value = this.addIncome.join(', ');
 		targetMonthValue.value = Math.ceil(this.getTargetMonth());
 		this.calcSavedMoney();
-		periodSelect.addEventListener('change', _this.periodChange.bind(_this));
-		periodSelect.addEventListener('change', _this.calcSavedMoney.bind(_this));
+		periodSelect.addEventListener('change', () => this.periodChange.call(this));
+		periodSelect.addEventListener('change', () => this.calcSavedMoney.call(this));
 	}
 	addExpensesBlock() {
 		const cloneExpensesItem = expensesItem[0].cloneNode(true);
@@ -138,11 +137,10 @@ class AppData {
 	}
 	getAddExpenses() {
 		let addExpenses = additionalExpensesItem.value.split(',');
-		const _this = this;
 		addExpenses.forEach((item) => {
 			item = item.trim();
-			if(_this.isString(item)) {
-				_this.addExpenses.push(item);
+			if(this.isString(item)) {
+				this.addExpenses.push(item);
 			}
 		});
 	}
@@ -157,23 +155,21 @@ class AppData {
 		}
 	}
 	getAddIncome() {
-		const _this = this;
 		additionalIncomeItem.forEach((item) => {
 			let itemValue = item.value.trim();
-			if(_this.isString(itemValue)) {
-				_this.addIncome.push(itemValue);
+			if(this.isString(itemValue)) {
+				this.addIncome.push(itemValue);
 			} else {
 				item.style.border = '1px solid red';
 			}
 		});
 	}
 	getExpenses() {
-		const _this = this;
 		expensesItem.forEach((item) => {
 			let itemExpenses = item.querySelector('.expenses-title'),
 			cashExpenses = item.querySelector('.expenses-amount');
-			if(_this.isString(itemExpenses.value) && _this.isNumber(cashExpenses.value)) {
-				_this.expenses[itemExpenses.value] = cashExpenses.value;
+			if(this.isString(itemExpenses.value) && this.isNumber(cashExpenses.value)) {
+				this.expenses[itemExpenses.value] = cashExpenses.value;
 			} else {
 				itemExpenses.style.border = '1px solid red';
 				cashExpenses.style.border = '1px solid red';
@@ -181,11 +177,10 @@ class AppData {
 		});
 	}
 	getIncome() {
-		const _this = this;
 		incomeItem.forEach((item) => {
 			let title = item.querySelector('.income-title'),
 			amount = item.querySelector('.income-amount');
-			if(_this.isString(title.value) && _this.isNumber(amount.value)) {
+			if(this.isString(title.value) && this.isNumber(amount.value)) {
 				this.income[title.value] = amount.value;
 			} else {
 				title.style.border = '1px solid red';
@@ -220,15 +215,12 @@ class AppData {
 	periodChange() {
 		periodAmount.textContent = periodSelect.value;
 	}
-	eventListeners = function() {
-		const _this = this;
-		start.addEventListener('click', () => _this.start());
-		expensesAdd.addEventListener('click', _this.addExpensesBlock);
-		incomeAdd.addEventListener('click', _this.addIncomeBlock);
-		periodSelect.addEventListener('change', () => {
-			_this.periodChange.bind(_this);
-		})
-		cancelButton.addEventListener('click', () => _this.reset.call(_this));
+	eventListeners() {
+		start.addEventListener('click', () => this.start());
+		expensesAdd.addEventListener('click', () => this.addExpensesBlock.call(this));
+		incomeAdd.addEventListener('click', () => this.addIncomeBlock.call(this));
+		periodSelect.addEventListener('change', () => this.periodChange.call(this));
+		cancelButton.addEventListener('click', () => this.reset.call(this));
 	};
 };
 const appData = new AppData();
