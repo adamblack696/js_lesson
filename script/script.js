@@ -229,7 +229,7 @@ class AppData {
 		periodAmount.textContent = periodSelect.value;
 	}
 	getInfoDeposit() {
-		if(!this.isNumber(depositAmount.value) || !this.isNumber(depositPercent.value) && depositPercent.value >= 0 && depositPercent.value <= 100) {
+		if(depositPercent.value < 0 || depositPercent.value > 100) {
 			alert('Введите корректное значение в поле проценты');
 			startButton.setAttribute('disabled', 'disabled');
 			depositAmount.value = 0;
